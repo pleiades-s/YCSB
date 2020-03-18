@@ -148,22 +148,31 @@ public class RocksDBClient extends DB {
     final int rocksThreads = Runtime.getRuntime().availableProcessors() * 2;
 
     if(cfDescriptors.isEmpty()) {
+
+      // Options
       final Options options = new Options()
           .optimizeLevelStyleCompaction()
           .setCreateIfMissing(true)
           .setCreateMissingColumnFamilies(true)
           .setIncreaseParallelism(rocksThreads)
           .setMaxBackgroundCompactions(rocksThreads)
-          .setInfoLogLevel(InfoLogLevel.INFO_LEVEL);
+          .setInfoLogLevel(InfoLogLevel.INFO_LEVEL)
+          .setStatsDumpPeriodSec(60)
+          .setDbLogDir("/home/pleiadex/Workplace/log/rocksdb-log");
+
       dbOptions = options;
       return RocksDB.open(options, rocksDbDir.toAbsolutePath().toString());
     } else {
+
+      // Options
       final DBOptions options = new DBOptions()
           .setCreateIfMissing(true)
           .setCreateMissingColumnFamilies(true)
           .setIncreaseParallelism(rocksThreads)
           .setMaxBackgroundCompactions(rocksThreads)
-          .setInfoLogLevel(InfoLogLevel.INFO_LEVEL);
+          .setInfoLogLevel(InfoLogLevel.INFO_LEVEL)
+          .setStatsDumpPeriodSec(60)
+          .setDbLogDir("/home/pleiadex/Workplace/log/rocksdb-log");
       dbOptions = options;
 
       final List<ColumnFamilyHandle> cfHandles = new ArrayList<>();
